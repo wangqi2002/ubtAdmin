@@ -12,19 +12,16 @@
       <div class="header clearfix">
         <el-card class="box-card card-red">
           <router-link class="link-color" :to="{ path: '/dashboard/order' }">
-            <h1>{{ infoData.orderToDelivery }}</h1>
             <div class="text item">待发货订单</div>
           </router-link>
         </el-card>
         <el-card class="box-card card-green">
           <router-link class="link-color" :to="{ path: '/dashboard/goods' }">
-            <h1>{{ infoData.goodsOnsale }}</h1>
             <div class="text item">上架中的商品</div>
           </router-link>
         </el-card>
         <el-card class="box-card card-black">
           <router-link class="link-color" :to="{ path: '/dashboard/user' }">
-            <h1>{{ infoData.user }}</h1>
             <div class="text item">总用户数</div>
           </router-link>
         </el-card>
@@ -37,15 +34,8 @@
 export default {
   data() {
     return {
-      infoData: {},
-      mainInfo: {},
       loginInfo: null,
       username: '',
-      label: '',
-      userData: [],
-      newData: [],
-      oldData: [],
-      related_pop: false,
       resetVision: true
     }
   },
@@ -53,14 +43,13 @@ export default {
     callback() {
       this.resetVision = false
     },
-    getInfo() {
-      this.axios.get('index').then(response => {
-        this.infoData = response.data.data
-      })
-    }
   },
   mounted() {
-    this.getInfo()
+    if (!this.loginInfo) {
+      this.loginInfo = JSON.parse(window.localStorage.getItem('userInfo') || null)
+      this.username = this.loginInfo.admin_name
+    }
+    console.log(this.loginInfo)
   },
 
   filters: {
@@ -118,13 +107,6 @@ export default {
   background: #fff;
   padding: 10px;
 }
-.float-right {
-  float: right;
-}
-.tips {
-  color: #8c939d;
-  font-size: 13px;
-}
 
 .text {
   font-size: 14px;
@@ -142,9 +124,6 @@ export default {
 
 .clearfix:after {
   clear: both;
-}
-.tab-content {
-  margin-bottom: 20px;
 }
 .box-card {
   width: 32%;
@@ -164,24 +143,10 @@ export default {
   margin-right: 0;
 }
 
-.box-card2 {
-  width: 32%;
-  float: left;
-  margin-right: 17px;
-}
-
-.box-card2:last-child {
-  margin-right: 0;
-}
-
 .header {
   margin-bottom: 30px;
 }
 
-.line {
-  margin: 20px 0;
-  border-top: 1px solid #d1dbe5;
-}
 
 .card-red {
   background: #e64242;
@@ -189,11 +154,6 @@ export default {
   color: #fff;
 }
 
-.card-blue {
-  background: #4db3ff;
-  border: none;
-  color: #fff;
-}
 .card-green {
   background: #11b95c;
   border: none;
@@ -203,18 +163,6 @@ export default {
   background: #1f2d3d;
   border: none;
   color: #fff;
-}
-.card-gray {
-  background: #d1dbe5;
-  border: none;
-}
-.card-gray a {
-  color: #1f2d3d;
-}
-.card-yellow {
-  background: #f8dd66;
-  border: none;
-  color: #111111;
 }
 
 .card-yellow .link-color {

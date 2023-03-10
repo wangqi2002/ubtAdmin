@@ -38,7 +38,7 @@ export default {
         username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
-          { min: 6, message: '密码不得低于6个字符', trigger: 'blur' }
+          { min: 4, message: '密码不得低于4个字符', trigger: 'blur' }
         ]
       },
       loading: false
@@ -54,35 +54,18 @@ export default {
         this.loading = true
         // let root = this.root
         this.axios
-          .post('/login/userLogin', {
-            user_telphone: this.form.username,
-            user_login_password: this.form.password
+          .post('/login/adminLogin', {
+            admin_account: this.form.username,
+            admin_password: this.form.password
           })
           .then(res => {
             let call = res.data
             console.log(call)
             this.loading = false
             if (call.code == 1) {
-              console.log(res.data)
-              localStorage.setItem('token', res.token)
-              localStorage.setItem('userInfo', JSON.stringify(res.data))
-              console.log(JSON.stringify(res.token))
-              console.log(JSON.stringify(res.data))
+              localStorage.setItem('token', call.token)
+              localStorage.setItem('userInfo', JSON.stringify(call.data))
               this.$router.push({ name: 'welcome' })
-              /* let sUserAgent = navigator.userAgent
-              // todo 手机端
-              let mobileAgents = ['Android', 'iPhone', 'Symbian', 'WindowsPhone', 'iPod', 'BlackBerry', 'Windows CE']
-              let goUrl = 0
-              for (var i = 0; i < mobileAgents.length; i++) {
-                if (sUserAgent.indexOf(mobileAgents[i]) > -1) {
-                  goUrl = 1
-                  break
-                }
-              }
-              console.log(goUrl)
-              if (goUrl == 1) {
-                this.$router.push({ name: 'wap' })
-              } */
             } else {
               this.$message({
                 type: 'error',

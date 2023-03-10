@@ -60,11 +60,6 @@ export default new Router({
           name: 'user',
           component: () => import('@/components/User/UserPage')
         },
-        {
-          path: 'user/add',
-          name: 'user_add',
-          component: () => import('@/components/User/UserAddPage')
-        },
         // {
         //   path: 'shipper',
         //   name: 'shipper',
